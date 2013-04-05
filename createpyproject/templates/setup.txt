@@ -1,0 +1,16 @@
+from distutils.core import setup
+
+setup(
+    name='%(name)s',
+    version='0.1.0',
+    author='%(author)s',
+    author_email='%(email)s',
+    packages=%(packages)s,
+    url='%(url)s',
+    license='LICENSE.txt',
+    description='%(description)s',
+    long_description=open('README.txt').read(),
+    install_requires=[
+        'test'
+    ],
+)
