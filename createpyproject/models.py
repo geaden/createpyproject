@@ -44,10 +44,14 @@ class Project(object):
     year = datetime.date.today().year
     date = datetime.date.today().strftime('%m/%d/%Y')
 
-    def __init__(self, author, name=None, path=os.path.dirname(__file__)):
+    def __init__(self, author, name=None, path=os.path.dirname(__file__), create=False):
         self.author = author
         self.name = name
-        self.path = os.path.join(path, name)
+        if create:
+            self.path = os.path.join(path, name)
+            os.mkdir(self.path)
+        else:
+            self.path = path
         self.url = 'https://www.bitbucket.org/%s' % self.name
 
     def get_readme(self):

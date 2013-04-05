@@ -7,9 +7,10 @@
 # you should have received as part of this distribution.
 
 import os
-from createpyproject.config import DESCRIPTION
-from createpyproject.models import Author, Project
-from createpyproject.utils import create_package, get_template
+import argparse
+from config import DESCRIPTION
+from models import Author, Project
+from utils import create_package, get_template
 
 
 def create_project(path,
@@ -17,16 +18,16 @@ def create_project(path,
                    athname='Gennady Denisov',
                    athemail='denisovgena@gmail.com',
                    description=DESCRIPTION,
-                   bin=False):
+                   bin=False,
+                   create=False):
     author = Author(athname, athemail)
-    project = Project(author=author, name=name, path=path)
+    project = Project(author=author, name=name, path=path, create=create)
     project.authors = []
     project.authors.append(project.author.name)
     project.description = description
-    os.mkdir(project.path)
     if bin:
-        os.mkdir(os.path.join(project.path, 'bin'))
-    os.mkdir(os.path.join(project.path, 'docs'))
+        os.mkdir(os.path.join(path, 'bin'))
+    os.mkdir(os.path.join(path, 'docs'))
     # Create main module
     mm = os.path.join(project.path, project.name)
     os.mkdir(mm)
@@ -76,15 +77,26 @@ def create_stuff(project):
 
 
 def main():
-    name = raw_input('Enter project name: ')
-    dest = raw_input('Enter destination path: ')
-    bin = raw_input('Use bin (y/n): ')
-    if bin == 'y':
+    parser = argparse.ArgumentParser(description='Creates project structure.')
+    parser.add_argument('name', metavar='N', help='project name')
+    parser.add_argument('-d', type=str, help='path to project')
+    parser.add_argument('-b', '--bin', help='use or not bin folder',
+                        action="store_true")
+    parser.add_argument('-c', '--c', help='create project root folder',
+                        action="store_true")
+    args = parser.parse_args()
+    name = args.name
+    dest = args.d
+    bin = args.bin
+    if bin:
         bin = True
     else:
         bin = False
+    create = False
+    if args.c:
+        create = True
     dest = os.path.abspath(dest)
-    project = create_project(path=dest, name=name, bin=bin)
+    project = create_project(path=dest, name=name, bin=bin, create=create)
     create_stuff(project)
 
 
