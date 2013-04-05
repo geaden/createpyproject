@@ -1,4 +1,3 @@
-===============
 createpyproject
 ===============
 
@@ -40,4 +39,4 @@ Numbered lists look like you'd expect:
 2. must be going
 
 Urls are http://like.this and links can be
-written `like this <http://www.example.com/foo/bar>`_.
+written [like this](http://www.example.com/foo/bar>).

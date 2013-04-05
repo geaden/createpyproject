@@ -57,7 +57,7 @@ def create_txt(project):
     # README
     readme = get_template('readme')
     info = project.get_readme()
-    with open(os.path.join(project.path, 'README.txt'), 'w') as f:
+    with open(os.path.join(project.path, 'README.md'), 'w') as f:
         f.write(readme % info)
 
     # LICENSE

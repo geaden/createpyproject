@@ -12,7 +12,8 @@ from config import CODING_INFO
 
 
 def get_template(name, path='templates'):
-    fl = os.path.join(os.path.dirname(__file__), path, name + '.txt')
+    ext = '.txt'
+    fl = os.path.join(os.path.dirname(__file__), path, name + ext)
     with open(fl, 'r') as f:
         s = f.read()
     return s
