@@ -14,6 +14,7 @@ from utils import create_package, get_template
 
 
 def create_project(path,
+                   version,
                    name='pyproject',
                    athname='Gennady Denisov',
                    athemail='denisovgena@gmail.com',
@@ -21,10 +22,16 @@ def create_project(path,
                    bin=False,
                    create=False):
     author = Author(athname, athemail)
-    project = Project(author=author, name=name, path=path, create=create)
+    project = Project(
+        author=author, name=name,
+        path=path, create=create)
     project.authors = []
     project.authors.append(project.author.name)
     project.description = description
+    if version:
+        project.version = version
+    if create:
+        path = project.path
     if bin:
         os.mkdir(os.path.join(path, 'bin'))
     os.mkdir(os.path.join(path, 'docs'))
@@ -78,25 +85,30 @@ def create_stuff(project):
 
 def main():
     parser = argparse.ArgumentParser(description='Creates project structure.')
-    parser.add_argument('name', metavar='N', help='project name')
-    parser.add_argument('-d', type=str, help='path to project')
+    parser.add_argument('name', help='project name')
+    parser.add_argument('destination', type=str, help='path to project')
     parser.add_argument('-b', '--bin', help='use or not bin folder',
                         action="store_true")
-    parser.add_argument('-c', '--c', help='create project root folder',
+    parser.add_argument('-c', '--create', help='create project root folder',
                         action="store_true")
+    parser.add_argument('-v', '--version', metavar='V', type=str, help='project version')
     args = parser.parse_args()
     name = args.name
-    dest = args.d
+    dest = args.destination
+    version = args.version
     bin = args.bin
     if bin:
         bin = True
     else:
         bin = False
     create = False
-    if args.c:
+    if args.create:
         create = True
     dest = os.path.abspath(dest)
-    project = create_project(path=dest, name=name, bin=bin, create=create)
+    project = create_project(
+        path=dest, name=name,
+        bin=bin, create=create,
+        version=version)
     create_stuff(project)
 
 
